@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adaptive Quiz Platform | B.Tech CSE</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=4.0">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Adaptive Quiz Platform</h1>
+      <p>B.Tech Mini Project | Computer Science & Engineering</p>
+    </div>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for msg in messages %}
+          <div class="flash-msg">{{ msg }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <p style="text-align: center; color: var(--text-muted); line-height: 1.5; margin-bottom: 1.75rem;">
+      Welcome to the Intelligent Assessment Engine. Test your conceptual mastery with dynamic question length, real-time adaptive difficulty, and interactive misconception review.
+    </p>
+
+    <div class="choice-grid">
+      <!-- Standard CSE Question Bank Option -->
+      <div class="choice-card">
+        <div>
+          <h3>💻 Standard CSE Bank</h3>
+          <p>
+            Curated bank of <strong>{{ total_standard_questions }}</strong> verified questions spanning Data Structures, Algorithms, OS, DBMS, Networks, and Computer Architecture.
+          </p>
+        </div>
+        <a href="{{ url_for('configure', source='standard') }}" class="btn">Configure CSE Quiz 🎯</a>
+      </div>
+
+      <!-- PDF Study Material Option -->
+      <div class="choice-card">
+        <div>
+          <h3>📄 PDF Concept Quiz</h3>
+          <p>
+            Upload lecture notes or textbook PDFs. Our offline PyMuPDF extraction engine extracts definitions and generates validated concept MCQs.
+          </p>
+        </div>
+        <a href="{{ url_for('upload') }}" class="btn btn-secondary" style="border: 2px solid var(--primary); color: var(--primary);">Upload Study PDF 🚀</a>
+      </div>
+    </div>
+
+    <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 12px; padding: 1rem 1.25rem;">
+      <h4 style="margin: 0 0 6px 0; font-size: 0.9rem; color: var(--text);">Key Prototype Features:</h4>
+      <ul style="margin: 0; padding-left: 1.2rem; font-size: 0.825rem; color: var(--text-muted); line-height: 1.5;">
+        <li><strong>Configurable Length:</strong> Choose 5, 10, 15, 20 or custom lengths up to 50 questions without repetition.</li>
+        <li><strong>Adaptive Engine:</strong> Dynamically adjusts difficulty (Easy ➔ Medium ➔ Hard) based on your live answer performance.</li>
+        <li><strong>Mixed Mode:</strong> Evaluates with a balanced mix across all difficulty levels.</li>
+        <li><strong>Mistake Review:</strong> Separate interactive reinforcement round targeting only your incorrect answers.</li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

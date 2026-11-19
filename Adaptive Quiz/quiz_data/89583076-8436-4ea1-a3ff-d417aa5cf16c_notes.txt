@@ -1,0 +1,43 @@
+Lloyd Institute of Engineering & Technology 
+Greater Noida, Uttar Pradesh 
+Department of Computer Science & Engineering 
+ 
+Assignment-1 
+CO1 
+Assignment Date: 17-08-2026            Submission Date: 24-08-2026 
+S.No Question CO Marks 
+1 Differentiate between Computer Architecture and Computer Organization. CO 1 5 
+2 Represent the following conditional control statements by two register 
+transfer statements with control functions. If (P=1) then (R1  R2) else if 
+(Q=1) then (R1 R3). Explain the process of Bus and Memory Transfer. 
+CO 1 5 
+3 An instruction is stored at location 400 with its address field at location 
+401. The address field has the value 500. A processor register R1 contains 
+the number 200. Evaluate the effective address if the addressing mode of 
+the instruction is: 
+i. Direct 
+ii. Immediate 
+iii. Relative 
+iv. Register Indirect 
+v. Index with R1 as register 
+CO 1 5 
+4 Explain the functional units of a computer system in detail. CO 1 5 
+5 What is meant by the term BUS arbitration? Why is it needed? How can 
+bus arbitration be implemented in a daisy-chaining scheme? 
+CO 1 5 
+6 Convert the following arithmetic expressions from infix to reverse polish 
+notation: 
+a) A*B+C*D+E*F 
+b) A*[B+C*CD+E]/F*(G+H) 
+CO 1 5 
+7 Describe in detail the different kinds of addressing modes with an 
+example. 
+CO 1 10 
+8 What do you mean by Processor Organization? Explain various types of 
+Processor Organization. 
+CO 1 5 
+9 Evaluate the arithmetic statement : 
+X=A+B*[C*D+E*(F+G)] 
+using a stack organized computer with Zero Address operation 
+instructions. 
+CO 1 5

@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+{% set active_page = "dashboard" %}
+
+{% block title %}Dashboard | Quizzly — Learn. Practice. Improve.{% endblock %}
+
+{% block content %}
+<!-- Welcome Banner -->
+<div class="welcome-banner">
+  <div>
+    <span class="tagline-badge">AI-Powered Adaptive Platform</span>
+    <h2>Welcome to Quizzly</h2>
+    <p>
+      Master your B.Tech Computer Science concepts through dynamic difficulty adaptation, automated misconception review, and intelligent document understanding.
+    </p>
+  </div>
+  <div style="text-align: right;">
+    <a href="{{ url_for('upload') }}" class="btn btn-secondary" style="background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: #FFFFFF;">
+      Upload Notes 📄
+    </a>
+  </div>
+</div>
+
+<!-- Resume Quiz Card (If active or paused session exists) -->
+{% if active_session %}
+  <div class="card" style="border-left: 6px solid var(--warning); background: #FFFDF5;">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+      <div>
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+          <span class="badge" style="background: #FEF3C7; color: #92400E;">⏸️ Unfinished Session Detected</span>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Status: {{ active_session.status|capitalize }}</span>
+        </div>
+        <h3 style="font-size: 1.15rem; color: var(--navy); margin-bottom: 2px;">
+          {{ subject_names.get(active_session.subject, active_session.subject|capitalize) }}
+        </h3>
+        <p style="font-size: 0.875rem; color: var(--text-muted);">
+          Progress: <strong>Question {{ active_session.current_index + 1 }} of {{ active_session.total_questions }}</strong>
+          &bull; Mode: <strong>{{ active_session.mode|capitalize }}</strong>
+          {% if active_session.is_timed %}
+            &bull; Remaining Time: <strong>{{ (active_session.time_remaining_seconds // 60) }}m {{ (active_session.time_remaining_seconds % 60) }}s</strong>
+          {% endif %}
+        </p>
+      </div>
+      <div style="display: flex; gap: 8px;">
+        <a href="{{ url_for('quiz') }}" class="btn btn-warning">Resume Quiz ➔</a>
+        <a href="{{ url_for('discard_session') }}" class="btn btn-secondary" onclick="return confirm('Are you sure you want to discard this quiz session?');">Discard</a>
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+<!-- Real SQLite Performance Metrics -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-label">Total Quizzes</div>
+    <div class="stat-value">{{ analytics.total_quizzes }}</div>
+    <div class="stat-subtext">Completed attempts</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Average Score</div>
+    <div class="stat-value">{{ analytics.avg_score }}%</div>
+    <div class="stat-subtext">Cumulative accuracy</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Questions Solved</div>
+    <div class="stat-value">{{ analytics.total_questions_answered }}</div>
+    <div class="stat-subtext">Across all subjects</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Highest Score</div>
+    <div class="stat-value">{{ analytics.highest_score }}%</div>
+    <div class="stat-subtext">Best performance</div>
+  </div>
+</div>
+
+<!-- Subject-Wise Quizzes Section -->
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+  <div>
+    <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--navy);">B.Tech CSE Core Subjects</h3>
+    <p style="font-size: 0.85rem; color: var(--text-muted);">Choose a subject to configure adaptive or mixed practice quizzes</p>
+  </div>
+</div>
+
+<div class="subject-grid">
+  <!-- 1. Python -->
+  <div class="subject-card">
+    <div>
+      <div class="subject-icon">🐍</div>
+      <div class="subject-title">Python Programming</div>
+      <p class="subject-desc">Data types, memory model, OOP, decorators, generators, GIL, and asynchronous asyncio programming.</p>
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px; border-top: 1px solid var(--border-light); padding-top: 10px;">
+      <span class="badge" style="background: var(--primary-light); color: var(--primary);">20 Questions</span>
+      <a href="{{ url_for('configure', subject='python') }}" class="btn" style="padding: 7px 14px; font-size: 0.85rem;">Start ➔</a>
+    </div>
+  </div>
+
+  <!-- 2. Data Structures -->
+  <div class="subject-card">
+    <div>
+      <div class="subject-icon">🌲</div>
+      <div class="subject-title">Data Structures</div>
+      <p class="subject-desc">Arrays, linked lists, stacks, BSTs, AVL balancing, Heaps, Hashing, Graph algorithms, and DP.</p>
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px; border-top: 1px solid var(--border-light); padding-top: 10px;">
+      <span class="badge" style="background: var(--primary-light); color: var(--primary);">25 Questions</span>
+      <a href="{{ url_for('configure', subject='data_structures') }}" class="btn" style="padding: 7px 14px; font-size: 0.85rem;">Start ➔</a>
+    </div>
+  </div>
+
+  <!-- 3. COA -->
+  <div class="subject-card">
+    <div>
+      <div class="subject-icon">⚡</div>
+      <div class="subject-title">Computer Org. & Architecture</div>
+      <p class="subject-desc">Instruction cycles, addressing modes, pipeline hazards, cache hierarchy, TLB, and paging.</p>
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px; border-top: 1px solid var(--border-light); padding-top: 10px;">
+      <span class="badge" style="background: var(--primary-light); color: var(--primary);">20 Questions</span>
+      <a href="{{ url_for('configure', subject='coa') }}" class="btn" style="padding: 7px 14px; font-size: 0.85rem;">Start ➔</a>
+    </div>
+  </div>
+
+  <!-- 4. DSTL -->
+  <div class="subject-card">
+    <div>
+      <div class="subject-icon">📐</div>
+      <div class="subject-title">Discrete Structures (DSTL)</div>
+      <p class="subject-desc">Propositional logic, sets, relations, equivalence, Posets, lattices, recurrence, and planar graphs.</p>
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px; border-top: 1px solid var(--border-light); padding-top: 10px;">
+      <span class="badge" style="background: var(--primary-light); color: var(--primary);">20 Questions</span>
+      <a href="{{ url_for('configure', subject='dstl') }}" class="btn" style="padding: 7px 14px; font-size: 0.85rem;">Start ➔</a>
+    </div>
+  </div>
+
+  <!-- 5. Mathematics -->
+  <div class="subject-card">
+    <div>
+      <div class="subject-icon">🔢</div>
+      <div class="subject-title">Engineering Mathematics</div>
+      <p class="subject-desc">Matrix rank, eigenvalues, Cayley-Hamilton, calculus limits, Bayes' theorem, and Normal distribution.</p>
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px; border-top: 1px solid var(--border-light); padding-top: 10px;">
+      <span class="badge" style="background: var(--primary-light); color: var(--primary);">20 Questions</span>
+      <a href="{{ url_for('configure', subject='mathematics') }}" class="btn" style="padding: 7px 14px; font-size: 0.85rem;">Start ➔</a>
+    </div>
+  </div>
+
+  <!-- PDF Notes & Handwritten Upload Card -->
+  <div class="subject-card" style="border: 2px dashed #818CF8; background: #F8FAFC;">
+    <div>
+      <div class="subject-icon" style="background: #EDE9FE; color: var(--violet);">📑</div>
+      <div class="subject-title">PDF Notes & Handwritten Docs</div>
+      <p class="subject-desc">Upload slides, textbooks, or handwritten student notes. Powered by Gemini Multimodal Vision & PyMuPDF.</p>
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px; border-top: 1px solid var(--border-light); padding-top: 10px;">
+      <span class="badge" style="background: #EDE9FE; color: var(--violet);">AI Generator</span>
+      <a href="{{ url_for('upload') }}" class="btn" style="background: var(--violet); padding: 7px 14px; font-size: 0.85rem;">Upload ➔</a>
+    </div>
+  </div>
+</div>
+
+<!-- Recent Attempts Table -->
+<div class="card">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+    <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--navy);">Recent Quiz Attempts</h3>
+    <a href="{{ url_for('history') }}" style="font-size: 0.85rem; color: var(--primary); text-decoration: none; font-weight: 600;">View All History ➔</a>
+  </div>
+
+  {% if analytics.recent_results %}
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Subject</th>
+          <th>Mode</th>
+          <th>Score</th>
+          <th>Accuracy</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in analytics.recent_results %}
+          <tr>
+            <td style="color: var(--text-muted); font-size: 0.825rem;">{{ r.completed_at[:16] }}</td>
+            <td><strong>{{ subject_names.get(r.subject, r.subject|capitalize) }}</strong></td>
+            <td><span class="badge" style="background: var(--primary-light); color: var(--primary);">{{ r.mode|capitalize }}</span></td>
+            <td>{{ r.score }} / {{ r.total_questions }}</td>
+            <td>
+              <strong style="color: {% if r.percentage >= 70 %}var(--success){% elif r.percentage >= 40 %}var(--warning){% else %}var(--error){% endif %};">
+                {{ r.percentage }}%
+              </strong>
+            </td>
+            <td>
+              <a href="{{ url_for('view_result', session_id=r.session_id) }}" style="color: var(--primary); font-size: 0.85rem; font-weight: 600; text-decoration: none;">Summary ➔</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div style="text-align: center; padding: 2rem 1rem; color: var(--text-muted);">
+      <p style="font-size: 0.95rem; margin-bottom: 8px;">No quiz attempts recorded yet.</p>
+      <p style="font-size: 0.825rem;">Select any subject above or upload your PDF study notes to take your first quiz!</p>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}
+

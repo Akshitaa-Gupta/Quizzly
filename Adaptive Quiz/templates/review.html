@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% set active_page = "subjects" if quiz_session.subject != 'pdf' else 'upload' %}
+
+{% block title %}Wrong-Answer Review ({{ index }}/{{ total }}) | Quizzly{% endblock %}
+
+{% block content %}
+<div class="quiz-container">
+  <!-- Review Round Banner -->
+  <div style="background: #FFFBEB; border: 1px solid #FDE68A; border-radius: var(--radius); padding: 12px 18px; margin-bottom: 1.25rem; display: flex; justify-content: space-between; align-items: center;">
+    <div>
+      <span style="font-size: 0.75rem; color: #92400E; font-weight: 700; text-transform: uppercase;">Reinforcement Mode</span>
+      <h3 style="font-size: 1.05rem; color: #78350F;">🔁 Automatic Misconception Review</h3>
+    </div>
+    <span class="badge" style="background: #FEF3C7; color: #92400E; font-size: 0.85rem;">
+      Mistake {{ index }} of {{ total }}
+    </span>
+  </div>
+
+  <!-- Progress Bar -->
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill" style="width: {{ progress_percent }}%; background: #F59E0B;"></div>
+  </div>
+
+  <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+    Re-attempt this question to reinforce understanding. Your original main quiz score will remain preserved.
+  </p>
+
+  <!-- Question Card -->
+  <div class="card">
+    <div style="font-size: 0.75rem; color: var(--violet); font-weight: 700; text-transform: uppercase; margin-bottom: 8px;">
+      Topic: {{ question.concept or 'Conceptual Review' }}
+    </div>
+
+    <h2 style="font-size: 1.25rem; font-weight: 700; line-height: 1.45; color: var(--navy); margin-bottom: 1.5rem;">
+      {{ question.question }}
+    </h2>
+
+    <form action="{{ url_for('review_round') }}" method="POST">
+      <!-- Options -->
+      {% for key in ['A', 'B', 'C', 'D'] %}
+        {% set text = question.options[key] %}
+        {% set card_state = "" %}
+        {% if feedback %}
+          {% if key == feedback.correct_key %}
+            {% set card_state = "correct" %}
+          {% elif key == feedback.selected_key and not feedback.is_correct %}
+            {% set card_state = "incorrect" %}
+          {% endif %}
+        {% endif %}
+
+        <label class="option-card {{ card_state }} {% if feedback %}locked{% endif %}">
+          <input 
+            type="radio" 
+            name="option" 
+            value="{{ key }}" 
+            required 
+            {% if feedback %}disabled{% endif %}
+            {% if feedback and feedback.selected_key == key %}checked{% endif %}
+          >
+          <span><strong>{{ key }}.</strong> {{ text }}</span>
+        </label>
+      {% endfor %}
+
+      <!-- Instant Feedback Section -->
+      {% if feedback %}
+        <div class="feedback-box {% if feedback.is_correct %}correct{% else %}incorrect{% endif %}">
+          <h3 style="font-size: 1.05rem; margin-bottom: 4px;">
+            {% if feedback.is_correct %}🎉 Well done! You mastered this misconception!{% else %}❌ Still not quite right{% endif %}
+          </h3>
+          {% if not feedback.is_correct %}
+            <p style="font-size: 0.9rem; margin-bottom: 4px;">
+              <strong>Correct Answer:</strong> {{ feedback.correct_key }}. {{ feedback.correct_text }}
+            </p>
+          {% endif %}
+          <p style="font-size: 0.875rem; margin-top: 4px;">
+            💡 <strong>Explanation:</strong> {{ feedback.explanation }}
+          </p>
+        </div>
+
+        <button type="submit" name="action" value="next" class="btn" style="width: 100%; margin-top: 1.25rem; padding: 13px;">
+          {% if is_last %}
+            Finish Review & View Final Results 📊
+          {% else %}
+            Next Mistake ➔
+          {% endif %}
+        </button>
+      {% else %}
+        <button type="submit" name="action" value="check" class="btn btn-warning" style="width: 100%; margin-top: 1.25rem; padding: 13px;">
+          Check Review Answer
+        </button>
+      {% endif %}
+    </form>
+  </div>
+</div>
+{% endblock %}
+

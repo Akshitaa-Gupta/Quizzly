@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% if is_review %}🔁 Mistake Review ({{ index }}/{{ total }}){% else %}Question {{ index }} of {{ total }} | Adaptive Quiz{% endif %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=4.0">
+</head>
+<body>
+  <div class="container">
+    <!-- Dynamic Progress Bar -->
+    <div class="progress-container">
+      <div class="progress-bar" style="width: {{ progress_percent }}%;"></div>
+    </div>
+
+    <!-- Quiz Meta Row -->
+    <div class="quiz-meta-row">
+      {% if is_review %}
+        <span class="badge" style="background: #fef3c7; color: #b45309;">🔁 Mistake Review {{ index }} / {{ total }}</span>
+        <span class="meta-remaining">{{ remaining }} remaining</span>
+      {% else %}
+        <span class="badge badge-q">Question {{ index }} / {{ total }}</span>
+        <span class="meta-remaining">{{ remaining }} remaining</span>
+        <div>
+          {% set diff_lower = difficulty.lower() %}
+          <span class="badge badge-diff {% if diff_lower == 'easy' %}badge-easy{% elif diff_lower == 'medium' %}badge-medium{% else %}badge-hard{% endif %}">
+            Difficulty: {{ difficulty }}
+          </span>
+          <span class="badge badge-mode" style="margin-left: 4px;">{{ mode|capitalize }}</span>
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Question Text -->
+    <h2 style="font-size: 1.25rem; line-height: 1.45; margin-bottom: 1.5rem; color: var(--text);">
+      {{ question.question }}
+    </h2>
+
+    <form action="{% if is_review %}{{ url_for('review_round') }}{% else %}{{ url_for('quiz') }}{% endif %}" method="POST">
+      
+      <!-- Option Cards -->
+      {% for key, text in question.options.items() %}
+        {% set card_class = "" %}
+        {% if feedback %}
+          {% if key == feedback.correct_key %}
+            {% set card_class = "option-correct" %}
+          {% elif key == feedback.selected_key and not feedback.is_correct %}
+            {% set card_class = "option-wrong" %}
+          {% endif %}
+        {% endif %}
+
+        <label class="option-card {{ card_class }}">
+          <input 
+            type="radio" 
+            name="option" 
+            value="{{ key }}" 
+            required 
+            {% if feedback %}disabled{% endif %}
+            {% if feedback and feedback.selected_key == key %}checked{% endif %}
+          >
+          <span><strong>{{ key }}.</strong> {{ text }}</span>
+        </label>
+      {% endfor %}
+
+      <!-- Instant Feedback Box -->
+      {% if feedback %}
+        {% if feedback.is_correct %}
+          <div class="instant-feedback feedback-correct">
+            <h3>🎉 Correct! Well done!</h3>
+            <p><strong>Concept:</strong> {{ feedback.concept }}</p>
+            {% if feedback.explanation %}
+              <p style="margin-top: 6px; font-size: 0.85rem; opacity: 0.95;"><strong>Explanation:</strong> {{ feedback.explanation }}</p>
+            {% endif %}
+          </div>
+        {% else %}
+          <div class="instant-feedback feedback-wrong">
+            <h3>❌ Not quite!</h3>
+            <p><strong>Correct Answer:</strong> {{ feedback.correct_key }}. {{ feedback.correct_text }}</p>
+            <p style="margin-top: 4px; font-size: 0.875rem;"><strong>Concept to Review:</strong> {{ feedback.concept }}</p>
+            {% if feedback.explanation %}
+              <p style="margin-top: 6px; font-size: 0.85rem; opacity: 0.95;"><strong>Explanation:</strong> {{ feedback.explanation }}</p>
+            {% endif %}
+          </div>
+        {% endif %}
+
+        <!-- Navigation Button -->
+        <button type="submit" name="next" value="1" class="btn" style="margin-top: 1.25rem;">
+          {% if is_review %}
+            {% if index == total %}Finish Review ➔{% else %}Next Mistake ➔{% endif %}
+          {% elif feedback.is_last %}
+            View Final Results 📊
+          {% else %}
+            Next Question ➔
+          {% endif %}
+        </button>
+      {% else %}
+        <button type="submit" class="btn" style="margin-top: 1.25rem;">Check Answer</button>
+      {% endif %}
+
+    </form>
+  </div>
+</body>
+</html>

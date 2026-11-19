@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% set active_page = "history" %}
+
+{% block title %}Quiz History & Performance | Quizzly{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+  <div>
+    <h2 style="font-size: 1.6rem; font-weight: 800; color: var(--navy); margin-bottom: 4px;">Assessment History</h2>
+    <p style="color: var(--text-muted); font-size: 0.9rem;">Complete log of your past quiz attempts stored in SQLite.</p>
+  </div>
+  <a href="{{ url_for('index') }}" class="btn btn-secondary">← Back to Dashboard</a>
+</div>
+
+<!-- History Stats Bar -->
+<div class="stats-grid" style="margin-bottom: 1.5rem;">
+  <div class="stat-card">
+    <div class="stat-label">Total Completed</div>
+    <div class="stat-value">{{ analytics.total_quizzes }}</div>
+    <div class="stat-subtext">Attempts</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Cumulative Average</div>
+    <div class="stat-value">{{ analytics.avg_score }}%</div>
+    <div class="stat-subtext">Accuracy</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Total Questions</div>
+    <div class="stat-value">{{ analytics.total_questions_answered }}</div>
+    <div class="stat-subtext">Solved</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Top Score</div>
+    <div class="stat-value">{{ analytics.highest_score }}%</div>
+    <div class="stat-subtext">High score</div>
+  </div>
+</div>
+
+<div class="card">
+  {% if history %}
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Date & Time</th>
+          <th>Subject</th>
+          <th>Mode</th>
+          <th>Score</th>
+          <th>Accuracy</th>
+          <th>Duration</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in history %}
+          <tr>
+            <td style="color: var(--text-muted); font-size: 0.85rem;">{{ r.completed_at[:16] }}</td>
+            <td><strong>{{ subject_names.get(r.subject, r.subject|capitalize) }}</strong></td>
+            <td><span class="badge" style="background: var(--primary-light); color: var(--primary);">{{ r.mode|capitalize }}</span></td>
+            <td><strong>{{ r.score }} / {{ r.total_questions }}</strong></td>
+            <td>
+              <strong style="color: {% if r.percentage >= 70 %}var(--success){% elif r.percentage >= 40 %}var(--warning){% else %}var(--error){% endif %};">
+                {{ r.percentage }}%
+              </strong>
+            </td>
+            <td style="font-size: 0.825rem; color: var(--text-muted);">
+              {% if r.time_taken_seconds > 0 %}
+                {{ (r.time_taken_seconds // 60) }}m {{ (r.time_taken_seconds % 60) }}s
+              {% else %}
+                Untimed
+              {% endif %}
+            </td>
+            <td>
+              <a href="{{ url_for('view_result', session_id=r.session_id) }}" class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.8rem;">
+                View Summary
+              </a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div style="text-align: center; padding: 3rem 1rem; color: var(--text-muted);">
+      <div style="font-size: 2rem; margin-bottom: 8px;">📊</div>
+      <h3 style="font-size: 1.1rem; color: var(--navy); margin-bottom: 6px;">No Quiz Records Found</h3>
+      <p style="font-size: 0.875rem; margin-bottom: 1rem;">Complete a subject quiz or upload study material to see your results tracked here.</p>
+      <a href="{{ url_for('index') }}" class="btn">Go to Dashboard</a>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}
+

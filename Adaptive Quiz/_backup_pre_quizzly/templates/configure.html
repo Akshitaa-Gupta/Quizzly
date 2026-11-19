@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Configuration | Adaptive Quiz</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=4.0">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Quiz Configuration</h1>
+      <p>{{ source_title }}</p>
+    </div>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for msg in messages %}
+          <div class="flash-msg">{{ msg }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <div style="display: flex; justify-content: space-between; align-items: center; background: #eef2ff; border: 1px solid #c7d2fe; border-radius: 10px; padding: 10px 14px; margin-bottom: 1.5rem;">
+      <span style="font-size: 0.875rem; color: #4338ca; font-weight: 600;">
+        {% if is_pdf %}
+          📄 Extracted from Uploaded PDF
+        {% else %}
+          📚 Curated B.Tech CSE Bank
+        {% endif %}
+      </span>
+      <span class="badge" style="background: #4f46e5; color: #ffffff;">
+        {{ max_available }} Unique Questions Available
+      </span>
+    </div>
+
+    <form action="{{ url_for('configure') }}" method="POST">
+      <input type="hidden" name="source" value="{{ source }}">
+
+      <!-- Question Count Selection -->
+      <div class="config-section">
+        <label class="section-title">1. Select Question Count</label>
+        <p style="font-size: 0.825rem; color: var(--text-muted); margin: 0 0 10px 0;">
+          Select a preset length or enter a custom amount (1 to {{ max_available }}):
+        </p>
+
+        <div class="pills-grid">
+          {% for preset in all_presets %}
+            {% set is_disabled = (preset > max_available) %}
+            {% set is_checked = (preset == default_count and not is_disabled) %}
+            <label class="pill-label {% if is_disabled %}disabled{% endif %}" id="pill-label-{{ preset }}">
+              <input 
+                type="radio" 
+                name="preset_count" 
+                value="{{ preset }}" 
+                {% if is_disabled %}disabled{% endif %}
+                {% if is_checked %}checked{% endif %}
+                onchange="selectPreset({{ preset }})"
+              >
+              <span>{{ preset }} Qs</span>
+            </label>
+          {% endfor %}
+        </div>
+
+        <div class="custom-input-box">
+          <label style="font-size: 0.9rem; font-weight: 600; color: var(--text);">Custom Count:</label>
+          <input 
+            type="number" 
+            id="question_count" 
+            name="question_count" 
+            value="{{ default_count }}" 
+            min="1" 
+            max="{{ max_available }}" 
+            required
+            oninput="handleCustomInput()"
+          >
+          <span>(Max: {{ max_available }} unique questions)</span>
+        </div>
+
+        {% if is_pdf and max_available < 10 %}
+          <p style="font-size: 0.8rem; color: #b45309; margin-top: 8px;">
+            ⚠️ This PDF provided {{ max_available }} unique validated questions. Unrelated standard questions will not be inserted.
+          </p>
+        {% endif %}
+      </div>
+
+      <!-- Quiz Mode Selection -->
+      <div class="config-section">
+        <label class="section-title">2. Select Quiz Mode</label>
+
+        <!-- Adaptive Mode -->
+        <label class="mode-card">
+          <input type="radio" name="mode" value="adaptive" checked>
+          <div class="mode-card-content">
+            <h4>⚡ Adaptive Mode (Recommended)</h4>
+            <p>
+              Begins at <strong>Easy</strong> difficulty. Successfully answering questions advances you to <strong>Medium</strong> and <strong>Hard</strong>, while missed questions dynamically decrease difficulty to reinforce comprehension.
+            </p>
+          </div>
+        </label>
+
+        <!-- Mixed Mode -->
+        <label class="mode-card">
+          <input type="radio" name="mode" value="mixed">
+          <div class="mode-card-content">
+            <h4>⚖️ Mixed Mode</h4>
+            <p>
+              Pre-selects a balanced combination of Easy, Medium, and Hard questions throughout your quiz. Difficulty levels remain fixed and do not change according to your answers.
+            </p>
+          </div>
+        </label>
+      </div>
+
+      <button type="submit" class="btn" style="margin-top: 1rem;">Start Quiz 🚀</button>
+      
+      <div style="text-align: center; margin-top: 14px;">
+        <a href="{% if is_pdf %}{{ url_for('upload') }}{% else %}{{ url_for('index') }}{% endif %}" style="font-size: 0.875rem; color: var(--text-muted); text-decoration: none;">
+          ← {% if is_pdf %}Upload a different PDF{% else %}Back to Home{% endif %}
+        </a>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    function selectPreset(val) {
+      document.getElementById('question_count').value = val;
+    }
+
+    function handleCustomInput() {
+      const val = parseInt(document.getElementById('question_count').value);
+      const presets = [5, 10, 15, 20];
+      presets.forEach(p => {
+        const radio = document.querySelector(`input[name="preset_count"][value="${p}"]`);
+        if (radio) {
+          radio.checked = (p === val);
+        }
+      });
+    }
+  </script>
+</body>
+</html>
+

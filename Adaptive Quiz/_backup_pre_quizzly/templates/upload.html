@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload Study Material | Adaptive Quiz</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=4.0">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Upload Study Material</h1>
+      <p>Select a PDF document for offline concept extraction & MCQ generation</p>
+    </div>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for msg in messages %}
+          <div class="flash-msg">{{ msg }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <form action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data">
+      <div class="upload-box">
+        <label style="display: block; margin-bottom: 12px; font-weight: 600;">Choose a PDF Document (.pdf)</label>
+        <input type="file" name="pdf_file" accept=".pdf" required style="color: var(--text);">
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin: 10px 0 0 0;">
+          PyMuPDF extracts definitions directly from notes or slides.
+        </p>
+      </div>
+
+      <button type="submit" class="btn">Process PDF & Extract MCQs ✨</button>
+
+      <div style="text-align: center; margin-top: 16px;">
+        <a href="{{ url_for('configure', source='standard') }}" style="font-size: 0.875rem; color: var(--primary); font-weight: 600; text-decoration: none;">
+          Or switch to standard B.Tech CSE question bank ➔
+        </a>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

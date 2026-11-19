@@ -1,0 +1,158 @@
+[
+    {
+        "id": "PDF-1",
+        "question": "According to the uploaded study material, which statement correctly describes the concept related to \"Memory\"?",
+        "options": {
+            "A": "IEEE Standard for Floating Point Numbers 08 III Control Unit: Instruction types, formats, instruction cycles and sub cycles (fetch and execute etc), micro operations, execution of a complete instruction.",
+            "B": "Hayes, Computer Architecture and Organization, Tata McGraw Hill, Third Edition, 1998.",
+            "C": "Floating point arithmetic operation, Arithmetic & logic unit design.",
+            "D": "08 IV Memory: Basic concept and hierarchy, semiconductor RAM memories, 2D & 2 1/2D memory organization."
+        },
+        "answer": "D",
+        "difficulty": "Easy",
+        "source": "Uploaded Notes"
+    },
+    {
+        "id": "PDF-2",
+        "question": "According to the uploaded study material, which statement correctly describes the concept related to \"Processor\"?",
+        "options": {
+            "A": "Carl Hamacher, Zvonko Vranesic, Safwat Zaky Computer Organization, McGraw-Hill, Fifth Edition, Reprint 2012 3.",
+            "B": "Processor organization, general registers organization, stack organization and addressing modes.",
+            "C": "BCS302 COMPUTER ORGANIZATION AND ARCHITECTURE Course Outcome ( CO) Bloom’s Knowledge Level (KL) At the end of course , the student will be able to understand CO 1 Study of the basic structure and operation of a digital computer system.",
+            "D": "08 IV Memory: Basic concept and hierarchy, semiconductor RAM memories, 2D & 2 1/2D memory organization."
+        },
+        "answer": "B",
+        "difficulty": "Easy",
+        "source": "Uploaded Notes"
+    },
+    {
+        "id": "PDF-3",
+        "question": "According to the uploaded study material, which statement correctly describes the concept related to \"Transfer\"?",
+        "options": {
+            "A": "Modes of Data Transfer: Programmed I/O, interrupt initiated I/O and Direct Memory Access., I/O channels and processors.",
+            "B": "Hardwire and micro programmed control: micro programme sequencing, concept of horizontal and vertical microprogramming.",
+            "C": "08 IV Memory: Basic concept and hierarchy, semiconductor RAM memories, 2D & 2 1/2D memory organization.",
+            "D": "08 II Arithmetic and logic unit: Look ahead carries adders."
+        },
+        "answer": "A",
+        "difficulty": "Easy",
+        "source": "Uploaded Notes"
+    },
+    {
+        "id": "PDF-4",
+        "question": "According to the uploaded study material, which statement correctly describes the concept related to \"COMPUTER\"?",
+        "options": {
+            "A": "K 1, K2 CO 2 Analysis of the design of arithmetic & logic unit and understanding of the fixed point and floating-point arithmetic operations.",
+            "B": "BCS302 COMPUTER ORGANIZATION AND ARCHITECTURE Course Outcome ( CO) Bloom’s Knowledge Level (KL) At the end of course , the student will be able to understand CO 1 Study of the basic structure and operation of a digital computer system.",
+            "C": "Floating point arithmetic operation, Arithmetic & logic unit design.",
+            "D": "Processor organization, general registers organization, stack organization and addressing modes."
+        },
+        "answer": "B",
+        "difficulty": "Easy",
+        "source": "Uploaded Notes"
+    },
+    {
+        "id": "PDF-5",
+        "question": "According to the uploaded study material, which statement correctly describes the concept related to \"Standard\"?",
+        "options": {
+            "A": "Modes of Data Transfer: Programmed I/O, interrupt initiated I/O and Direct Memory Access., I/O channels and processors.",
+            "B": "Hennessy, “Computer Architecture-A Quantitative Approach”, Elsevier, a division of reed India Private Limited, Fifth edition, 2012 7.",
+            "C": "IEEE Standard for Floating Point Numbers 08 III Control Unit: Instruction types, formats, instruction cycles and sub cycles (fetch and execute etc), micro operations, execution of a complete instruction.",
+            "D": "William Stallings, Computer Organization and Architecture-Designing for Performance, Pearson Education, Seventh edition, 2006."
+        },
+        "answer": "C",
+        "difficulty": "Easy",
+        "source": "Uploaded Notes"
+    },
+    {
+        "id": "PDF-6",
+        "question": "According to the uploaded study material, which statement correctly describes the concept related to \"Hamacher\"?",
+        "options": {
+            "A": "Program Control, Reduced Instruction Set Computer, Pipelining.",
+            "B": "08 II Arithmetic and logic unit: Look ahead carries adders.",
+            "C": "Carl Hamacher, Zvonko Vranesic, Safwat Zaky Computer Organization, McGraw-Hill, Fifth Edition, Reprint 2012 3.",
+            "D": "Floating point arithmetic operation, Arithmetic & logic unit design."
+        },
+        "answer": "C",
+        "difficulty": "Easy",
+        "source": "Uploaded Notes"
+    },
+    {
+        "id": "PDF-7",
+        "question": "According to the uploaded study material, which statement correctly describes the concept related to \"Hennessy\"?",
+        "options": {
+            "A": "Modes of Data Transfer: Programmed I/O, interrupt initiated I/O and Direct Memory Access., I/O channels and processors.",
+            "B": "Hennessy, “Computer Architecture-A Quantitative Approach”, Elsevier, a division of reed India Private Limited, Fifth edition, 2012 7.",
+            "C": "Processor organization, general registers organization, stack organization and addressing modes.",
+            "D": "08 II Arithmetic and logic unit: Look ahead carries adders."
+        },
+        "answer": "B",
+        "difficulty": "Easy",
+        "source": "Uploaded Notes"
+    },
+    {
+        "id": "PDF-8",
+        "question": "According to the uploaded study material, which statement correctly describes the concept related to \"Serial\"?",
+        "options": {
+            "A": "Multiplication: Signed operand multiplication, Booths algorithm and array multiplier.",
+            "B": "Serial Communication: Synchronous & asynchronous communication, standard communication interfaces.",
+            "C": "08 IV Memory: Basic concept and hierarchy, semiconductor RAM memories, 2D & 2 1/2D memory organization.",
+            "D": "Program Control, Reduced Instruction Set Computer, Pipelining."
+        },
+        "answer": "B",
+        "difficulty": "Easy",
+        "source": "Uploaded Notes"
+    },
+    {
+        "id": "PDF-9",
+        "question": "According to the uploaded study material, which statement correctly describes the concept related to \"memories\"?",
+        "options": {
+            "A": "Multiplication: Signed operand multiplication, Booths algorithm and array multiplier.",
+            "B": "Serial Communication: Synchronous & asynchronous communication, standard communication interfaces.",
+            "C": "Cache memories: concept and design issues & performance, address mapping and replacement Auxiliary memories: magnetic disk, magnetic tape and optical disks Virtual memory: concept implementation.",
+            "D": "K 1, K2 CO 2 Analysis of the design of arithmetic & logic unit and understanding of the fixed point and floating-point arithmetic operations."
+        },
+        "answer": "C",
+        "difficulty": "Easy",
+        "source": "Uploaded Notes"
+    },
+    {
+        "id": "PDF-10",
+        "question": "According to the uploaded study material, which statement correctly describes the concept related to \"William\"?",
+        "options": {
+            "A": "William Stallings, Computer Organization and Architecture-Designing for Performance, Pearson Education, Seventh edition, 2006.",
+            "B": "K 1, K2 CO 2 Analysis of the design of arithmetic & logic unit and understanding of the fixed point and floating-point arithmetic operations.",
+            "C": "BCS302 COMPUTER ORGANIZATION AND ARCHITECTURE Course Outcome ( CO) Bloom’s Knowledge Level (KL) At the end of course , the student will be able to understand CO 1 Study of the basic structure and operation of a digital computer system.",
+            "D": "Carl Hamacher, Zvonko Vranesic, Safwat Zaky Computer Organization, McGraw-Hill, Fifth Edition, Reprint 2012 3."
+        },
+        "answer": "A",
+        "difficulty": "Easy",
+        "source": "Uploaded Notes"
+    },
+    {
+        "id": "PDF-11",
+        "question": "According to the uploaded study material, which statement correctly describes the concept related to \"Hardwire\"?",
+        "options": {
+            "A": "Hardwire and micro programmed control: micro programme sequencing, concept of horizontal and vertical microprogramming.",
+            "B": "Cache memories: concept and design issues & performance, address mapping and replacement Auxiliary memories: magnetic disk, magnetic tape and optical disks Virtual memory: concept implementation.",
+            "C": "Processor organization, general registers organization, stack organization and addressing modes.",
+            "D": "08 V Input / Output: Peripheral devices, I/O interface, I/O ports, Interrupts: interrupt hardware, types of interrupts and exceptions."
+        },
+        "answer": "A",
+        "difficulty": "Easy",
+        "source": "Uploaded Notes"
+    },
+    {
+        "id": "PDF-12",
+        "question": "According to the uploaded study material, which statement correctly describes the concept related to \"Behrooz\"?",
+        "options": {
+            "A": "Modes of Data Transfer: Programmed I/O, interrupt initiated I/O and Direct Memory Access., I/O channels and processors.",
+            "B": "Carl Hamacher, Zvonko Vranesic, Safwat Zaky Computer Organization, McGraw-Hill, Fifth Edition, Reprint 2012 3.",
+            "C": "Behrooz Parahami, “Computer Architecture”, Oxford University Press, Eighth Impression, 2011.",
+            "D": "Multiplication: Signed operand multiplication, Booths algorithm and array multiplier."
+        },
+        "answer": "C",
+        "difficulty": "Easy",
+        "source": "Uploaded Notes"
+    }
+]

@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% set active_page = "upload" %}
+
+{% block title %}Upload Study Notes | Quizzly{% endblock %}
+
+{% block content %}
+<div style="max-width: 680px; margin: 0 auto;">
+  <div style="margin-bottom: 1.5rem; text-align: center;">
+    <h2 style="font-size: 1.6rem; font-weight: 800; color: var(--navy); margin-bottom: 4px;">Upload Study Notes</h2>
+    <p style="color: var(--text-muted); font-size: 0.9rem;">
+      AI-powered conceptual MCQ generation from textbook PDFs, lecture slides, and handwritten notes.
+    </p>
+  </div>
+
+  <div class="card" style="border-top: 4px solid var(--violet);">
+    <!-- Capability Highlights -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1.5rem;">
+      <div style="background: var(--primary-light); padding: 12px; border-radius: var(--radius); border: 1px solid var(--primary-border);">
+        <strong style="font-size: 0.85rem; color: var(--primary);">📄 Standard Text PDFs</strong>
+        <p style="font-size: 0.775rem; color: var(--navy); margin-top: 2px;">
+          Fast PyMuPDF extraction for digital textbooks and slide handouts.
+        </p>
+      </div>
+      <div style="background: #F5F3FF; padding: 12px; border-radius: var(--radius); border: 1px solid #DDD6FE;">
+        <strong style="font-size: 0.85rem; color: var(--violet);">✍️ Handwritten & Scanned</strong>
+        <p style="font-size: 0.775rem; color: var(--navy); margin-top: 2px;">
+          Multimodal vision understanding reads scanned pages and handwritten student notes.
+        </p>
+      </div>
+    </div>
+
+    <form action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data" id="upload-form">
+      <div style="border: 2px dashed #818CF8; border-radius: var(--radius-lg); background: #F8FAFC; padding: 2.5rem 1.5rem; text-align: center; margin-bottom: 1.5rem; cursor: pointer;" onclick="document.getElementById('pdf_file').click();">
+        <div style="font-size: 2.5rem; margin-bottom: 8px;">📑</div>
+        <h4 style="font-size: 1.05rem; color: var(--navy); margin-bottom: 4px;">Select or Drag your PDF here</h4>
+        <p style="font-size: 0.825rem; color: var(--text-muted); margin-bottom: 12px;">Supports documents up to 16 MB</p>
+        
+        <input 
+          type="file" 
+          id="pdf_file" 
+          name="pdf_file" 
+          accept=".pdf" 
+          required 
+          style="display: none;"
+          onchange="updateFileName(this)"
+        >
+        <span class="btn btn-secondary" style="font-size: 0.85rem; padding: 8px 16px;">Browse File</span>
+        <div id="file-name-display" style="margin-top: 10px; font-weight: 700; color: var(--primary); font-size: 0.9rem;"></div>
+      </div>
+
+      <button type="submit" class="btn" style="width: 100%; padding: 14px; font-size: 1rem; background: var(--violet);" id="submit-btn">
+        Process Document & Build Quiz 🚀
+      </button>
+
+      <!-- Processing Loading State (Hidden by default) -->
+      <div id="loading-spinner" style="display: none; text-align: center; margin-top: 1.25rem;">
+        <div style="display: inline-block; width: 28px; height: 28px; border: 3px solid rgba(139, 92, 246, 0.2); border-radius: 50%; border-top-color: var(--violet); animation: spin 0.8s linear infinite;"></div>
+        <p style="font-size: 0.875rem; color: var(--violet); font-weight: 600; margin-top: 8px;">
+          Analyzing document with Quizzly Engine... Please wait a few moments.
+        </p>
+      </div>
+    </form>
+  </div>
+</div>
+
+<style>
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+</style>
+
+<script>
+  function updateFileName(input) {
+    if (input.files && input.files[0]) {
+      document.getElementById('file-name-display').textContent = "Selected: " + input.files[0].name;
+    }
+  }
+
+  document.getElementById('upload-form').addEventListener('submit', function() {
+    document.getElementById('submit-btn').style.display = 'none';
+    document.getElementById('loading-spinner').style.display = 'block';
+  });
+</script>
+{% endblock %}

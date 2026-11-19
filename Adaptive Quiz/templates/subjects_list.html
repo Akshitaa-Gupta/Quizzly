@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% set active_page = "subjects" %}
+
+{% block title %}Subject Question Banks | Quizzly{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 1.5rem;">
+  <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--navy); margin-bottom: 4px;">Subject Question Banks</h2>
+  <p style="color: var(--text-muted); font-size: 0.9rem;">Comprehensive academic question banks curated for B.Tech Computer Science & Engineering.</p>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 16px;">
+  {% for key, info in subjects_data.items() %}
+    <div class="card" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+      <div style="display: flex; align-items: flex-start; gap: 16px;">
+        <div style="font-size: 2rem; width: 50px; height: 50px; border-radius: 12px; background: var(--primary-light); display: flex; align-items: center; justify-content: center;">
+          {{ info.icon }}
+        </div>
+        <div>
+          <h3 style="font-size: 1.15rem; color: var(--navy); margin-bottom: 4px;">{{ info.name }}</h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px; max-width: 600px;">{{ info.desc }}</p>
+          <div style="display: flex; gap: 8px;">
+            <span class="badge" style="background: var(--success-bg); color: var(--success-text);">Easy: {{ info.counts.Easy }}</span>
+            <span class="badge" style="background: var(--warning-bg); color: var(--warning-text);">Medium: {{ info.counts.Medium }}</span>
+            <span class="badge" style="background: var(--error-bg); color: var(--error-text);">Hard: {{ info.counts.Hard }}</span>
+            <span class="badge" style="background: var(--primary-light); color: var(--primary);">Total: {{ info.total }} Qs</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <a href="{{ url_for('configure', subject=key) }}" class="btn">Configure {{ info.name }} Quiz ➔</a>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}
+

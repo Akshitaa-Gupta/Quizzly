@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+{% set active_page = "subjects" if subject != 'pdf' else 'upload' %}
+
+{% block title %}Quiz Configuration | Quizzly{% endblock %}
+
+{% block content %}
+<div style="max-width: 680px; margin: 0 auto;">
+  <div style="margin-bottom: 1.5rem; text-align: center;">
+    <h2 style="font-size: 1.6rem; font-weight: 800; color: var(--navy); margin-bottom: 4px;">Quiz Configuration</h2>
+    <p style="color: var(--text-muted); font-size: 0.9rem;">Customize your assessment parameters before starting</p>
+  </div>
+
+  <div class="card" style="border-top: 4px solid var(--primary);">
+    <!-- Source & Availability Banner -->
+    <div style="display: flex; justify-content: space-between; align-items: center; background: var(--primary-light); border: 1px solid var(--primary-border); border-radius: var(--radius); padding: 12px 16px; margin-bottom: 1.5rem;">
+      <div>
+        <span style="font-size: 0.8rem; color: var(--primary); font-weight: 700; text-transform: uppercase;">Assessment Source</span>
+        <h4 style="font-size: 1.05rem; color: var(--navy); margin-top: 2px;">{{ source_title }}</h4>
+      </div>
+      <span class="badge" style="background: var(--primary); color: #FFFFFF; font-size: 0.85rem;">
+        {{ max_available }} Unique Questions Available
+      </span>
+    </div>
+
+    <form action="{{ url_for('configure') }}" method="POST">
+      <input type="hidden" name="subject" value="{{ subject }}">
+      {% if doc_id %}
+        <input type="hidden" name="doc_id" value="{{ doc_id }}">
+      {% endif %}
+
+      <!-- Section 1: Question Count -->
+      <div style="margin-bottom: 1.5rem;">
+        <label style="display: block; font-weight: 700; font-size: 0.95rem; color: var(--navy); margin-bottom: 6px;">
+          1. Select Question Count
+        </label>
+        <p style="font-size: 0.825rem; color: var(--text-muted); margin-bottom: 10px;">
+          Choose a preset or enter a custom number between 1 and {{ max_available }}:
+        </p>
+
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 10px;">
+          {% for preset in [5, 10, 15, 20] %}
+            {% set is_disabled = (preset > max_available) %}
+            {% set is_checked = (preset == default_count and not is_disabled) %}
+            <label style="
+              display: block; text-align: center; padding: 12px 8px; border: 2px solid {% if is_checked %}var(--primary){% else %}var(--border-color){% endif %};
+              background: {% if is_checked %}var(--primary-light){% else %}#FFFFFF{% endif %};
+              color: {% if is_checked %}var(--primary){% else %}var(--text-main){% endif %};
+              border-radius: var(--radius); font-weight: 700; cursor: {% if is_disabled %}not-allowed{% else %}pointer{% endif %};
+              opacity: {% if is_disabled %}0.35{% else %}1{% endif %}; transition: all 0.15s ease;
+            " class="pill-option" id="pill-{{ preset }}">
+              <input 
+                type="radio" 
+                name="preset_count" 
+                value="{{ preset }}" 
+                style="display: none;"
+                {% if is_disabled %}disabled{% endif %}
+                {% if is_checked %}checked{% endif %}
+                onchange="selectPreset({{ preset }})"
+              >
+              <span>{{ preset }} Questions</span>
+            </label>
+          {% endfor %}
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <label style="font-size: 0.85rem; font-weight: 600; color: var(--text-main);">Custom Count:</label>
+          <input 
+            type="number" 
+            id="question_count" 
+            name="question_count" 
+            value="{{ default_count }}" 
+            min="1" 
+            max="{{ max_available }}" 
+            required
+            style="width: 100px; padding: 8px 12px; border: 2px solid var(--border-color); border-radius: 8px; font-size: 0.95rem; font-weight: 700; outline: none;"
+            oninput="handleCustomInput()"
+          >
+          <span style="font-size: 0.8rem; color: var(--text-muted);">(Max {{ max_available }} available)</span>
+        </div>
+      </div>
+
+      <!-- Section 2: Quiz Mode -->
+      <div style="margin-bottom: 1.5rem;">
+        <label style="display: block; font-weight: 700; font-size: 0.95rem; color: var(--navy); margin-bottom: 6px;">
+          2. Select Quiz Mode
+        </label>
+
+        <label style="display: flex; gap: 12px; padding: 14px; border: 2px solid var(--primary); background: var(--primary-light); border-radius: var(--radius); margin-bottom: 10px; cursor: pointer;">
+          <input type="radio" name="mode" value="adaptive" checked style="accent-color: var(--primary); transform: scale(1.2); margin-top: 3px;">
+          <div>
+            <h4 style="font-size: 0.95rem; color: var(--navy); margin-bottom: 2px;">⚡ Adaptive Mode (Recommended)</h4>
+            <p style="font-size: 0.825rem; color: var(--text-muted); line-height: 1.4;">
+              Starts at <strong>Easy</strong> difficulty. Successfully answering questions raises the difficulty level to <strong>Medium</strong> and <strong>Hard</strong>, while missed questions step down to reinforce fundamentals.
+            </p>
+          </div>
+        </label>
+
+        <label style="display: flex; gap: 12px; padding: 14px; border: 2px solid var(--border-color); background: #FFFFFF; border-radius: var(--radius); cursor: pointer;">
+          <input type="radio" name="mode" value="mixed" style="accent-color: var(--primary); transform: scale(1.2); margin-top: 3px;">
+          <div>
+            <h4 style="font-size: 0.95rem; color: var(--navy); margin-bottom: 2px;">⚖️ Mixed Mode</h4>
+            <p style="font-size: 0.825rem; color: var(--text-muted); line-height: 1.4;">
+              Selects a balanced distribution across Easy, Medium, and Hard questions throughout the quiz without dynamically changing difficulty based on answers.
+            </p>
+          </div>
+        </label>
+      </div>
+
+      <!-- Section 3: Timer Options -->
+      <div style="margin-bottom: 2rem;">
+        <label style="display: block; font-weight: 700; font-size: 0.95rem; color: var(--navy); margin-bottom: 6px;">
+          3. Timer Mode
+        </label>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <label style="display: flex; align-items: center; gap: 10px; padding: 12px 14px; border: 2px solid var(--border-color); border-radius: var(--radius); cursor: pointer; background: #FFFFFF;" id="timer-untimed-label">
+            <input type="radio" name="timer_mode" value="untimed" checked style="accent-color: var(--primary); transform: scale(1.2);" onchange="toggleTimerInput(false)">
+            <div>
+              <strong style="font-size: 0.9rem; color: var(--navy);">Untimed</strong>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">No time pressure</div>
+            </div>
+          </label>
+
+          <label style="display: flex; align-items: center; gap: 10px; padding: 12px 14px; border: 2px solid var(--border-color); border-radius: var(--radius); cursor: pointer; background: #FFFFFF;" id="timer-timed-label">
+            <input type="radio" name="timer_mode" value="timed" style="accent-color: var(--primary); transform: scale(1.2);" onchange="toggleTimerInput(true)">
+            <div>
+              <strong style="font-size: 0.9rem; color: var(--navy);">Timed Quiz</strong>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">Countdown timer</div>
+            </div>
+          </label>
+        </div>
+
+        <div id="timed_duration_wrap" style="display: none; margin-top: 10px; padding: 10px 14px; background: #FFFBEB; border: 1px solid #FDE68A; border-radius: 8px;">
+          <label style="font-size: 0.85rem; font-weight: 600; color: #92400E;">Time Limit (Minutes):</label>
+          <input type="number" name="time_limit_minutes" value="10" min="1" max="60" style="width: 70px; padding: 6px 10px; border: 1px solid #D97706; border-radius: 6px; font-weight: 700; margin-left: 8px;">
+          <span style="font-size: 0.8rem; color: #B45309; margin-left: 6px;">Timer pauses during answer feedback!</span>
+        </div>
+      </div>
+
+      <button type="submit" class="btn" style="width: 100%; padding: 14px; font-size: 1.05rem;">
+        Start Quiz Session 🚀
+      </button>
+
+      <div style="text-align: center; margin-top: 14px;">
+        <a href="{{ url_for('index') }}" style="font-size: 0.85rem; color: var(--text-muted); text-decoration: none;">
+          ← Return to Dashboard
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  function selectPreset(val) {
+    document.getElementById('question_count').value = val;
+    highlightPill(val);
+  }
+
+  function handleCustomInput() {
+    const val = parseInt(document.getElementById('question_count').value);
+    highlightPill(val);
+  }
+
+  function highlightPill(val) {
+    [5, 10, 15, 20].forEach(p => {
+      const el = document.getElementById('pill-' + p);
+      if (el) {
+        if (p === val) {
+          el.style.borderColor = 'var(--primary)';
+          el.style.background = 'var(--primary-light)';
+          el.style.color = 'var(--primary)';
+        } else {
+          el.style.borderColor = 'var(--border-color)';
+          el.style.background = '#FFFFFF';
+          el.style.color = 'var(--text-main)';
+        }
+      }
+    });
+  }
+
+  function toggleTimerInput(isTimed) {
+    document.getElementById('timed_duration_wrap').style.display = isTimed ? 'block' : 'none';
+  }
+</script>
+{% endblock %}

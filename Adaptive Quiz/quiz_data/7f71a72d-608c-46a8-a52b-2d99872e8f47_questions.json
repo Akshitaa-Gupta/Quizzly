@@ -1,0 +1,158 @@
+[
+    {
+        "id": "PDF-1",
+        "question": "Which statement correctly describes processor?",
+        "options": {
+            "A": "CO 1 10 8 What do you mean by Processor Organization?",
+            "B": "A processor register R1 contains the number 200.",
+            "C": "If (P=1) then (R1  R2) else if (Q=1) then (R1 R3).",
+            "D": "X=A+B*[C*D+E*(F+G)] using a stack organized computer with Zero Address operation instructions."
+        },
+        "answer": "B",
+        "difficulty": "Easy",
+        "source": "Uploaded Notes"
+    },
+    {
+        "id": "PDF-2",
+        "question": "Which statement correctly describes Processor?",
+        "options": {
+            "A": "CO 1 10 8 What do you mean by Processor Organization?",
+            "B": "Index with R1 as register CO 1 5 4 Explain the functional units of a computer system in detail.",
+            "C": "A processor register R1 contains the number 200.",
+            "D": "If (P=1) then (R1  R2) else if (Q=1) then (R1 R3)."
+        },
+        "answer": "A",
+        "difficulty": "Easy",
+        "source": "Uploaded Notes"
+    },
+    {
+        "id": "PDF-3",
+        "question": "Which statement correctly describes arbitration?",
+        "options": {
+            "A": "CO 1 5 2 Represent the following conditional control statements by two register transfer statements with control functions.",
+            "B": "a) A*B+C*D+E*F b) A*[B+C*CD+E]/F*(G+H) CO 1 5 7 Describe in detail the different kinds of addressing modes with an example.",
+            "C": "CO 1 5 5 What is meant by the term BUS arbitration?",
+            "D": "How can bus arbitration be implemented in a daisy-chaining scheme?"
+        },
+        "answer": "D",
+        "difficulty": "Easy",
+        "source": "Uploaded Notes"
+    },
+    {
+        "id": "PDF-4",
+        "question": "Which statement correctly describes arithmetic?",
+        "options": {
+            "A": "How can bus arbitration be implemented in a daisy-chaining scheme?",
+            "B": "CO 1 5 3 An instruction is stored at location 400 with its address field at location 401.",
+            "C": "CO1 1 Differentiate between Computer Architecture and Computer Organization.",
+            "D": "X=A+B*[C*D+E*(F+G)] using a stack organized computer with Zero Address operation instructions."
+        },
+        "answer": "D",
+        "difficulty": "Medium",
+        "source": "Uploaded Notes"
+    },
+    {
+        "id": "PDF-5",
+        "question": "Which statement correctly describes register?",
+        "options": {
+            "A": "Index with R1 as register CO 1 5 4 Explain the functional units of a computer system in detail.",
+            "B": "CO 1 10 8 What do you mean by Processor Organization?",
+            "C": "CO 1 5 3 An instruction is stored at location 400 with its address field at location 401.",
+            "D": "CO 1 5 2 Represent the following conditional control statements by two register transfer statements with control functions."
+        },
+        "answer": "A",
+        "difficulty": "Medium",
+        "source": "Uploaded Notes"
+    },
+    {
+        "id": "PDF-6",
+        "question": "Which statement correctly describes Convert?",
+        "options": {
+            "A": "X=A+B*[C*D+E*(F+G)] using a stack organized computer with Zero Address operation instructions.",
+            "B": "a) A*B+C*D+E*F b) A*[B+C*CD+E]/F*(G+H) CO 1 5 7 Describe in detail the different kinds of addressing modes with an example.",
+            "C": "CO 1 5 2 Represent the following conditional control statements by two register transfer statements with control functions.",
+            "D": "the effective address if the addressing mode of the instruction is: i."
+        },
+        "answer": "B",
+        "difficulty": "Hard",
+        "source": "Uploaded Notes"
+    },
+    {
+        "id": "PDF-7",
+        "question": "Which statement correctly describes Represent?",
+        "options": {
+            "A": "CO 1 10 8 What do you mean by Processor Organization?",
+            "B": "How can bus arbitration be implemented in a daisy-chaining scheme?",
+            "C": "CO 1 5 2 Represent the following conditional control statements by two register transfer statements with control functions.",
+            "D": "the effective address if the addressing mode of the instruction is: i."
+        },
+        "answer": "C",
+        "difficulty": "Medium",
+        "source": "Uploaded Notes"
+    },
+    {
+        "id": "PDF-8",
+        "question": "Which statement correctly describes Computer?",
+        "options": {
+            "A": "X=A+B*[C*D+E*(F+G)] using a stack organized computer with Zero Address operation instructions.",
+            "B": "CO1 1 Differentiate between Computer Architecture and Computer Organization.",
+            "C": "CO 1 5 5 What is meant by the term BUS arbitration?",
+            "D": "Index with R1 as register CO 1 5 4 Explain the functional units of a computer system in detail."
+        },
+        "answer": "B",
+        "difficulty": "Easy",
+        "source": "Uploaded Notes"
+    },
+    {
+        "id": "PDF-9",
+        "question": "Which statement correctly describes else?",
+        "options": {
+            "A": "the effective address if the addressing mode of the instruction is: i.",
+            "B": "CO1 1 Differentiate between Computer Architecture and Computer Organization.",
+            "C": "If (P=1) then (R1  R2) else if (Q=1) then (R1 R3).",
+            "D": "CO 1 5 2 Represent the following conditional control statements by two register transfer statements with control functions."
+        },
+        "answer": "C",
+        "difficulty": "Easy",
+        "source": "Uploaded Notes"
+    },
+    {
+        "id": "PDF-10",
+        "question": "Which statement correctly describes effective?",
+        "options": {
+            "A": "the effective address if the addressing mode of the instruction is: i.",
+            "B": "X=A+B*[C*D+E*(F+G)] using a stack organized computer with Zero Address operation instructions.",
+            "C": "How can bus arbitration be implemented in a daisy-chaining scheme?",
+            "D": "Index with R1 as register CO 1 5 4 Explain the functional units of a computer system in detail."
+        },
+        "answer": "A",
+        "difficulty": "Easy",
+        "source": "Uploaded Notes"
+    },
+    {
+        "id": "PDF-11",
+        "question": "Which statement correctly describes instruction?",
+        "options": {
+            "A": "CO 1 5 2 Represent the following conditional control statements by two register transfer statements with control functions.",
+            "B": "If (P=1) then (R1  R2) else if (Q=1) then (R1 R3).",
+            "C": "CO 1 5 5 What is meant by the term BUS arbitration?",
+            "D": "CO 1 5 3 An instruction is stored at location 400 with its address field at location 401."
+        },
+        "answer": "D",
+        "difficulty": "Easy",
+        "source": "Uploaded Notes"
+    },
+    {
+        "id": "PDF-12",
+        "question": "Which statement correctly describes arbitration?",
+        "options": {
+            "A": "CO 1 5 2 Represent the following conditional control statements by two register transfer statements with control functions.",
+            "B": "Index with R1 as register CO 1 5 4 Explain the functional units of a computer system in detail.",
+            "C": "CO 1 5 5 What is meant by the term BUS arbitration?",
+            "D": "a) A*B+C*D+E*F b) A*[B+C*CD+E]/F*(G+H) CO 1 5 7 Describe in detail the different kinds of addressing modes with an example."
+        },
+        "answer": "C",
+        "difficulty": "Easy",
+        "source": "Uploaded Notes"
+    }
+]

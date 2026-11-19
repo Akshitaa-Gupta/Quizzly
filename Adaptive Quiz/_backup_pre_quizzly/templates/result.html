@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Results | Adaptive Quiz</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=4.0">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Performance Summary</h1>
+      <p>{{ mode|capitalize }} Mode | {{ total }}-Question Assessment</p>
+    </div>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for msg in messages %}
+          <div class="flash-msg">{{ msg }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <!-- Overall Score Banner -->
+    <div class="score-banner">
+      <h2>{{ score }} / {{ total }}</h2>
+      <p>
+        Overall Accuracy: <strong>{{ percentage }}%</strong>
+        {% if percentage >= 85 %}
+          — 🏆 Outstanding Conceptual Mastery!
+        {% elif percentage >= 65 %}
+          — 🌟 Proficient Understanding!
+        {% elif percentage >= 45 %}
+          — 💡 Good Effort — Review Suggested
+        {% else %}
+          — 📚 Foundational Review Recommended
+        {% endif %}
+      </p>
+    </div>
+
+    <!-- Breakdown By Difficulty -->
+    <div class="breakdown-grid">
+      <div class="breakdown-card">
+        <div class="diff-title" style="color: #15803d;">Easy</div>
+        <div class="diff-score">{{ breakdown.Easy.correct }} / {{ breakdown.Easy.total }}</div>
+      </div>
+      <div class="breakdown-card">
+        <div class="diff-title" style="color: #b45309;">Medium</div>
+        <div class="diff-score">{{ breakdown.Medium.correct }} / {{ breakdown.Medium.total }}</div>
+      </div>
+      <div class="breakdown-card">
+        <div class="diff-title" style="color: #b91c1c;">Hard</div>
+        <div class="diff-score">{{ breakdown.Hard.correct }} / {{ breakdown.Hard.total }}</div>
+      </div>
+    </div>
+
+    <!-- Misconception / Wrong-Answer Review Callout -->
+    {% if review_count > 0 %}
+      <div style="background: #fef3c7; border: 2px solid #fde68a; border-radius: 12px; padding: 1.1rem 1.25rem; margin-bottom: 1.5rem; text-align: center;">
+        <h3 style="margin: 0 0 6px 0; color: #92400e; font-size: 1.05rem;">
+          🔁 Misconception Review Queue
+        </h3>
+        <p style="margin: 0 0 12px 0; font-size: 0.875rem; color: #78350f;">
+          You answered <strong>{{ review_count }}</strong> question(s) incorrectly. Re-attempt them in a dedicated review round to reinforce key concepts without altering your main quiz score.
+        </p>
+        <a href="{{ url_for('start_review') }}" class="btn btn-warning" style="display: block; width: auto; max-width: 380px; margin: 0 auto; text-decoration: none;">
+          Launch Wrong-Answer Review ({{ review_count }}) ➔
+        </a>
+      </div>
+    {% else %}
+      <div style="background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 12px; padding: 1rem; margin-bottom: 1.5rem; text-align: center; color: #065f46;">
+        🎉 <strong>Flawless Score!</strong> Zero mistakes recorded during this session.
+      </div>
+    {% endif %}
+
+    <!-- Detailed Answer Breakdown -->
+    <h3 style="margin-bottom: 1rem; font-size: 1.1rem; color: var(--text);">
+      Question-by-Question Breakdown
+    </h3>
+
+    {% for item in answers %}
+      <div class="review-item {% if item.is_correct %}correct{% else %}incorrect{% endif %}">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px;">
+          <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted);">
+            Question {{ loop.index }} &bull; [{{ item.difficulty }}]
+          </span>
+        </div>
+
+        <p style="margin: 0 0 8px 0; font-weight: 600; padding-right: 90px; color: var(--text);">
+          {{ item.question }}
+        </p>
+
+        <p style="margin: 2px 0; font-size: 0.85rem; color: var(--text-muted);">
+          Concept: <em>{{ item.concept }}</em>
+        </p>
+
+        <p style="margin: 6px 0 0 0; font-size: 0.9rem;">
+          Your Answer: <strong>{{ item.selected }}. {{ item.selected_text }}</strong>
+          {% if not item.is_correct %}
+            <br>
+            Correct Answer: <strong style="color: var(--success);">{{ item.correct }}. {{ item.correct_text }}</strong>
+          {% endif %}
+        </p>
+
+        {% if item.explanation %}
+          <p style="margin: 6px 0 0 0; font-size: 0.825rem; color: #475569; background: rgba(0,0,0,0.03); padding: 6px 8px; border-radius: 6px;">
+            💡 <strong>Explanation:</strong> {{ item.explanation }}
+          </p>
+        {% endif %}
+      </div>
+    {% endfor %}
+
+    <!-- Navigation Stack -->
+    <div class="action-stack">
+      <a href="{{ url_for('configure', source='standard') }}" class="btn">
+        Start New CSE Quiz 🎯
+      </a>
+      <a href="{{ url_for('upload') }}" class="btn btn-secondary">
+        Upload Another PDF 📄
+      </a>
+      <a href="{{ url_for('index') }}" style="text-align: center; color: var(--text-muted); font-size: 0.875rem; text-decoration: none; margin-top: 4px;">
+        ← Back to Home
+      </a>
+    </div>
+  </div>
+</body>
+</html>

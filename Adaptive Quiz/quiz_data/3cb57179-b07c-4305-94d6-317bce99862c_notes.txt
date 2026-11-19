@@ -1,0 +1,50 @@
+BCS302                                                               COMPUTER ORGANIZATION AND ARCHITECTURE  
+Course Outcome ( CO) Bloom’s Knowledge Level (KL) 
+At the end of course , the student will be able to understand 
+CO 1 Study of the basic structure and operation of a digital computer system. K 1, K2 
+CO 2 Analysis of the design of arithmetic & logic unit and understanding of the fixed point and floating-point 
+arithmetic operations. K2, K4 
+CO 3 Implementation of control unit techniques and the concept of Pipelining K 3 
+CO 4 Understanding the hierarchical memory system, cache memories and virtual memory K2 
+CO 5 Understanding the different ways of communicating with I/O devices and standard I/O interfaces K2, K4 
+DETAILED SYLLABUS 3-1-0 
+Unit  Topic  Proposed  
+Lecture  
+I 
+ 
+Introduction: Functional units of digital system and their interconnections, buses, bus architecture, 
+types of buses and bus arbitration. Register, bus and memory transfer.  Processor organization, 
+general registers organization, stack organization and addressing modes. 
+08 
+II 
+Arithmetic and logic unit: Look ahead carries adders. Multiplication: Signed operand multiplication, 
+Booths algorithm and array multiplier. Division and logic operations. Floating point arithmetic 
+operation, Arithmetic & logic unit design. IEEE Standard for Floating Point Numbers 
+08 
+III 
+Control Unit: Instruction types, formats, instruction cycles and sub cycles (fetch and execute etc), 
+micro operations, execution of a complete instruction. Program Control, Reduced Instruction Set 
+Computer, Pipelining. Hardwire and micro programmed control: micro programme sequencing, 
+concept of horizontal and vertical microprogramming.   
+08 
+IV 
+Memory: Basic concept and hierarchy, semiconductor RAM memories, 2D & 2 1/2D memory 
+organization. ROM memories.  Cache memories: concept and design issues & performance, address 
+mapping and replacement Auxiliary memories: magnetic disk, magnetic tape and optical disks 
+Virtual memory: concept implementation. 
+08 
+V 
+Input / Output: Peripheral devices, I/O interface, I/O ports, Interrupts: interrupt hardware, types of 
+interrupts and exceptions.  Modes of Data Transfer: Programmed I/O, interrupt initiated I/O and 
+Direct Memory Access., I/O channels and processors.  Serial Communication: Synchronous & 
+asynchronous communication, standard communication interfaces. 
+08 
+Text books:  
+1. Computer System Architecture - M. Mano 
+2.  Carl Hamacher, Zvonko Vranesic, Safwat Zaky Computer Organization, McGraw-Hill, Fifth Edition, Reprint 2012  
+3.  John P. Hayes, Computer Architecture and Organization, Tata McGraw Hill, Third Edition, 1998. Reference books  
+4. William Stallings, Computer Organization and Architecture-Designing for Performance, Pearson Education, Seventh edition, 2006.  
+5. Behrooz Parahami, “Computer Architecture”, Oxford University Press, Eighth Impression, 2011.  
+6. David A. Patterson and John L. Hennessy, “Computer Architecture-A Quantitative Approach”, Elsevier, a division of reed India      
+Private Limited, Fifth edition, 2012 
+7. Structured Computer Organization, Tannenbaum(PHI)

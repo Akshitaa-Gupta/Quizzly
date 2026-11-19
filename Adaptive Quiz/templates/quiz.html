@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+{% set active_page = "subjects" if quiz_session.subject != 'pdf' else 'upload' %}
+
+{% block title %}Question {{ index }} of {{ total }} | Quizzly{% endblock %}
+
+{% block content %}
+<div class="quiz-container">
+  <!-- Dynamic Progress Bar -->
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill" style="width: {{ progress_percent }}%;"></div>
+  </div>
+
+  <!-- Header Bar -->
+  <div class="quiz-header-bar">
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <span class="badge" style="background: var(--navy); color: #FFFFFF;">Question {{ index }} / {{ total }}</span>
+      <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">{{ remaining }} remaining</span>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 8px;">
+      {% if quiz_session.is_timed %}
+        <span class="badge badge-timer" id="timer-display">
+          ⏱️ <span id="time-left">{{ "%02d:%02d"|format(quiz_session.time_remaining_seconds // 60, quiz_session.time_remaining_seconds % 60) }}</span>
+        </span>
+      {% endif %}
+
+      {% set diff_lower = difficulty.lower() %}
+      <span class="badge {% if diff_lower == 'easy' %}badge-easy{% elif diff_lower == 'medium' %}badge-medium{% else %}badge-hard{% endif %}">
+        ⚡ {{ difficulty }}
+      </span>
+
+      <span class="badge" style="background: var(--primary-light); color: var(--primary);">
+        {{ mode|capitalize }}
+      </span>
+
+      <form action="{{ url_for('pause_quiz') }}" method="POST" style="display: inline;" id="pause-form">
+        <input type="hidden" name="time_remaining" id="pause_time_remaining" value="{{ quiz_session.time_remaining_seconds }}">
+        <button type="submit" class="btn btn-secondary" style="padding: 5px 12px; font-size: 0.8rem;" title="Pause and return to dashboard">
+          ⏸️ Pause
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Main Question Card -->
+  <div class="card" style="margin-bottom: 1.5rem;">
+    {% if question.concept %}
+      <div style="font-size: 0.75rem; color: var(--violet); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">
+        Topic: {{ question.concept }}
+      </div>
+    {% endif %}
+
+    <h2 style="font-size: 1.25rem; font-weight: 700; line-height: 1.45; color: var(--navy); margin-bottom: 1.5rem;">
+      {{ question.question }}
+    </h2>
+
+    <form action="{{ url_for('quiz') }}" method="POST" id="quiz-form">
+      <input type="hidden" name="time_remaining" id="submit_time_remaining" value="{{ quiz_session.time_remaining_seconds }}">
+
+      <!-- Option Cards -->
+      {% for key in ['A', 'B', 'C', 'D'] %}
+        {% set text = question.options[key] %}
+        {% set card_state = "" %}
+        {% if feedback %}
+          {% if key == feedback.correct_key %}
+            {% set card_state = "correct" %}
+          {% elif key == feedback.selected_key and not feedback.is_correct %}
+            {% set card_state = "incorrect" %}
+          {% endif %}
+        {% endif %}
+
+        <label class="option-card {{ card_state }} {% if feedback %}locked{% endif %}">
+          <input 
+            type="radio" 
+            name="option" 
+            value="{{ key }}" 
+            required 
+            {% if feedback %}disabled{% endif %}
+            {% if feedback and feedback.selected_key == key %}checked{% endif %}
+          >
+          <span><strong>{{ key }}.</strong> {{ text }}</span>
+        </label>
+      {% endfor %}
+
+      <!-- Instant Feedback Section -->
+      {% if feedback %}
+        <div class="feedback-box {% if feedback.is_correct %}correct{% else %}incorrect{% endif %}">
+          <h3 style="font-size: 1.05rem; margin-bottom: 4px;">
+            {% if feedback.is_correct %}🎉 Correct! Excellent job!{% else %}❌ Incorrect{% endif %}
+          </h3>
+          {% if not feedback.is_correct %}
+            <p style="font-size: 0.9rem; margin-bottom: 4px;">
+              <strong>Correct Answer:</strong> {{ feedback.correct_key }}. {{ feedback.correct_text }}
+            </p>
+          {% endif %}
+          <p style="font-size: 0.875rem; margin-top: 4px;">
+            💡 <strong>Explanation:</strong> {{ feedback.explanation }}
+          </p>
+        </div>
+
+        <button type="submit" name="action" value="next" class="btn" style="width: 100%; margin-top: 1.25rem; padding: 13px;">
+          {% if is_last %}
+            Complete Assessment ➔
+          {% else %}
+            Continue to Next Question ➔
+          {% endif %}
+        </button>
+      {% else %}
+        <button type="submit" name="action" value="check" class="btn" style="width: 100%; margin-top: 1.25rem; padding: 13px;">
+          Check Answer
+        </button>
+      {% endif %}
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+{% if quiz_session.is_timed and not feedback %}
+<script>
+  let remainingSeconds = {{ quiz_session.time_remaining_seconds }};
+  const display = document.getElementById('time-left');
+  const submitInput = document.getElementById('submit_time_remaining');
+  const pauseInput = document.getElementById('pause_time_remaining');
+
+  const countdown = setInterval(function() {
+    remainingSeconds--;
+    if (submitInput) submitInput.value = remainingSeconds;
+    if (pauseInput) pauseInput.value = remainingSeconds;
+
+    if (remainingSeconds <= 0) {
+      clearInterval(countdown);
+      display.textContent = "00:00";
+      alert("Time has expired! Submitting assessment.");
+      window.location.href = "{{ url_for('expire_quiz') }}";
+      return;
+    }
+
+    const mins = Math.floor(remainingSeconds / 60);
+    const secs = remainingSeconds % 60;
+    display.textContent = (mins < 10 ? "0" : "") + mins + ":" + (secs < 10 ? "0" : "") + secs;
+
+    // Periodically sync to server every 10 seconds
+    if (remainingSeconds % 10 === 0) {
+      fetch("{{ url_for('sync_timer') }}", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: "time_remaining=" + remainingSeconds
+      }).catch(e => console.log(e));
+    }
+  }, 1000);
+</script>
+{% endif %}
+{% endblock %}
